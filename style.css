@@ -1,0 +1,779 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+:root {
+    --primary-color: #483D8B; /* Purple */
+    --dark-bg: #121212; /* Black background */
+    --text-color: #ffffff;
+    --text-muted: #b0b0b0; /* Lighter grey for muted text on dark */
+    --gradient-start: #8e44ad; /* Purple */
+    --gradient-end: #c83765; /* Pink/Red */
+    --button-blue-gradient: linear-gradient(to right, #00c6ff, #0072ff); /* Blue gradient */
+    --gold-color: #FFD700; /* Gold */
+    --card-bg: #1e1e1e; /* Slightly lighter black for cards */
+    --border-color: #333333; /* Subtle border */
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body {
+    background-color: var(--dark-bg);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+.mobile-container {
+    width: 100%;
+    max-width: 450px;
+    background-color: var(--dark-bg);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border-color); /* Subtle border around container */
+}
+/* --- AUTHENTICATION PAGES --- */
+.auth-container {
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    /* Optional: Add a subtle background pattern or texture */
+    /* background-image: url('image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23121212"/><path d="M0 0L100 100M100 0L0 100" stroke="%231a1a1a" stroke-width="0.5"/></svg>'); */
+}
+.auth-logo {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px rgba(142, 68, 173, 0.5); /* Purple glow */
+}
+.auth-logo span {
+    color: var(--gold-color);
+}
+.auth-form {
+    width: 100%;
+    max-width: 350px;
+    background-color: rgba(30, 30, 30, 0.7); /* Semi-transparent card bg */
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+}
+.auth-form input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-color);
+    font-size: 1em;
+}
+.auth-form input::placeholder {
+    color: var(--text-muted);
+}
+.auth-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 25px;
+    background: var(--button-blue-gradient);
+    color: white;
+    font-size: 1.2em;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(0, 114, 255, 0.3); /* Blue shadow */
+}
+.auth-btn:hover {
+     box-shadow: 0 6px 15px rgba(0, 114, 255, 0.5);
+}
+.auth-toggle-link {
+    margin-top: 20px;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-decoration: underline;
+}
+#login-page { display: none; }
+/* --- MAIN APP CONTAINER --- */
+#main-app { display: none; padding-bottom: 80px; }
+/* --- Common Header & Page Styles --- */
+.header {
+    background: linear-gradient(90deg, var(--gradient-start), var(--primary-color)); /* Purple gradient */
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+.header-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+.header-title span {
+    color: var(--gold-color);
+}
+.power-btn, .back-btn {
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.power-btn {
+    color: #ff4757;
+    font-size: 1.4em;
+}
+.power-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(90deg);
+}
+.back-btn {
+    color: #e67e22;
+    font-size: 1.4em;
+}
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+.page {
+    padding: 20px;
+}
+.page-title {
+    font-size: 1.8em;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--gold-color); /* Gold title */
+}
+#dashboard-page, #payment-page, #withdraw-fund-page, #packages-page, #deposit-payment-page, #deposit-details-page, #profile-page, #earning-history-page, #withdraw-history-page, #referrals-page, #active-deposits-page, #task-page { display: none; }
+#dashboard-page { display: block; }
+/* --- Dashboard Page Styles --- */
+.info-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.card {
+    background: linear-gradient(135deg, var(--card-bg), #2a2a2a); /* Dark card gradient */
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.card .card-title {
+    font-size: 0.9em;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+.card .card-value {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--gold-color); /* Gold value */
+}
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    text-align: center;
+}
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+.icon-item:hover {
+    transform: translateY(-5px);
+    opacity: 0.9;
+}
+.icon-item .icon-bg {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.icon-item .icon-bg i {
+    font-size: 2em;
+    color: white;
+}
+.icon-item p {
+    font-size: 0.9em;
+    font-weight: 500;
+}
+/* --- REFERRALS STYLES (SHARED) --- */
+.invitation-container {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.invitation-container h3 {
+    font-size: 1.3em; /* Thora chota title */
+    margin-bottom: 15px;
+    color: var(--gold-color);
+    text-align: center; /* Title ko center mein karein */
+}
+.link-box {
+    display: flex;
+    align-items: center; /* Input aur button ko aamne samne align karein */
+}
+.link-box input {
+    flex-grow: 1;
+    padding: 10px; /* Padding kam ki gayi hai */
+    border: 1px solid var(--border-color);
+    background: var(--dark-bg); /* Background thora gehra kiya hai */
+    color: white;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    font-size: 0.8em; /* Font size chota kiya hai */
+    /* Yeh line lambe link ko aage '...' ke sath dikhayegi */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.link-box button {
+    padding: 10px 15px; /* Padding kam ki gayi hai */
+    border: none;
+    background: var(--button-blue-gradient);
+    color: white;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    flex-shrink: 0; /* Button ko shrink hone se rokein */
+}
+        /* --- Referrals Page Specific --- */
+        .referrals-list-title {
+            padding: 15px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--primary-color));
+            border-radius: 10px;
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 15px;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .referrals-list-container {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+        .referrals-list-header {
+            display: grid;
+            grid-template-columns: 0.5fr 1.5fr 1fr 1fr 1fr;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            text-align: center;
+            color: var(--gold-color);
+        }
+        .referral-row {
+            display: grid;
+            grid-template-columns: 0.5fr 1.5fr 1fr 1fr 1fr;
+            text-align: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .referral-row:last-child {
+            border-bottom: none;
+        }
+        .no-referrals {
+            padding: 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+        /* --- ACTIVE DEPOSITS PAGE (NEW) --- */
+        .deposits-table-container {
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 25px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+        .deposits-table-header {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            color: white;
+            font-weight: 500;
+            padding: 15px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #622e8a, #d9526c, #f39d5e);
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .deposits-table-body {
+            padding-top: 15px;
+            min-height: 400px;
+            position: relative;
+        }
+        .deposits-table-body .history-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .no-deposits-message {
+            color: var(--text-muted);
+            position: relative;
+            z-index: 2;
+            padding-top: 20px;
+            text-align: center;
+        }
+        .status-approved {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+        .status-rejected {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .status-pending {
+            color: #f1c40f;
+            font-weight: bold;
+        }
+        /* Other page styles */
+        .payment-methods-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+       .payment-btn {
+    background: var(--button-blue-gradient); /* Sirf yeh line tabdeel ki gayi hai */
+    border: none;
+    color: var(--text-color);
+    padding: 18px;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+}
+        .payment-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .withdraw-form-container {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .payment-logo {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 20px;
+            background: #333;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .withdraw-form-container input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--dark-bg);
+            color: var(--text-color);
+            font-size: 1em;
+        }
+        .withdraw-now-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: var(--button-blue-gradient);
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 114, 255, 0.3);
+        }
+        .plan-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .plan-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--gold-color);
+        }
+        .plan-price {
+            background-color: var(--gold-color);
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .buy-plan-btn {
+            background: var(--button-blue-gradient);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 114, 255, 0.3);
+        }
+        .plan-details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            text-align: center;
+            gap: 10px;
+        }
+        .detail-item .detail-value {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--gold-color);
+        }
+        .detail-item .detail-label {
+            font-size: 0.8em;
+            color: var(--text-muted);
+        }
+        .deposit-details-page-content {
+            text-align: center;
+        }
+        .deposit-method-logo {
+            max-width: 150px;
+            background: #333;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 0 auto 20px auto;
+            display: block;
+            border: 1px solid var(--border-color);
+        }
+        .info-box {
+            background: linear-gradient(to right, #f39c12, #e74c3c);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .details-box, .proof-box {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-row span:first-child {
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+        .detail-row span:last-child {
+            font-weight: 600;
+        }
+        .proof-box h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            color: var(--gold-color);
+        }
+        .proof-box input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--dark-bg);
+            color: var(--text-color);
+            font-size: 1em;
+        }
+        .upload-proof-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: var(--button-blue-gradient);
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 114, 255, 0.3);
+        }
+        /* --- PROFILE PAGE STYLES --- */
+        .profile-form-container {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+        .profile-form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+        .profile-form-row:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+        .profile-form-row label {
+            flex-basis: 30%;
+            font-weight: 500;
+            color: var(--gold-color);
+        }
+        .profile-form-row input {
+            flex-basis: 70%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--dark-bg);
+            color: var(--text-color);
+            font-size: 1em;
+        }
+        /* --- HISTORY PAGES STYLES (COMMON) --- */
+        .history-container {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 15px;
+            min-height: 150px;
+            border: 1px solid var(--border-color);
+        }
+        .history-header {
+            display: grid;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            text-align: center;
+            color: var(--gold-color);
+        }
+        .history-header span:first-child {
+            text-align: left;
+            padding-left: 5px;
+        }
+        .no-history {
+            padding: 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+        #earning-history-page .history-header {
+            grid-template-columns: 0.5fr 1.5fr 1.5fr 1.5fr;
+        }
+        #withdraw-history-page .history-header {
+            grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr;
+        }
+        #withdraw-history-page .history-row {
+            display: grid;
+            grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr;
+            padding: 10px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 450px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--primary-color));
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            border-top: 1px solid var(--border-color);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-color);
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .nav-item:hover {
+            transform: scale(1.1);
+        }
+        .nav-item i {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+        .nav-item span {
+            font-size: 0.8em;
+        }
+        /* ===== CUSTOM ALERT BOX KI STYLING ===== */
+        #custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #custom-alert-box {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
+            transform: scale(0.9);
+            animation: popIn 0.3s forwards;
+            border: 1px solid var(--border-color);
+        }
+        @keyframes popIn {
+            to { transform: scale(1); }
+        }
+        #custom-alert-message {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            color: var(--text-color);
+        }
+        #custom-alert-ok-btn {
+            padding: 12px 40px;
+            border: none;
+            border-radius: 25px;
+            background: var(--button-blue-gradient);
+            color: white;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 114, 255, 0.3);
+        }
+        /* ===== CUSTOM CONFIRM BOX KI STYLING ===== */
+        #custom-confirm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+        #custom-confirm-box {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
+            transform: scale(0.9);
+            animation: popIn 0.3s forwards;
+            border: 1px solid var(--border-color);
+        }
+        #custom-confirm-message {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            color: var(--text-color);
+        }
+        #custom-confirm-buttons {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+        }
+        #custom-confirm-yes-btn, #custom-confirm-no-btn {
+            padding: 12px 0;
+            flex-grow: 1;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        #custom-confirm-yes-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        #custom-confirm-no-btn {
+            background: #bdc3c7;
+            color: #2c3e50;
+        }
+        /* Task Page Specific */
+        .video-container {
+             border: 1px solid var(--border-color) !important;
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+        }
+        /* Updated Icon Colors - Enhanced and More Vibrant */
+        .icon-item:nth-child(1) .icon-bg { background: linear-gradient(135deg, #FF6B6B, #FF8E8E); } /* Buy Plan - Red/Pink */
+        .icon-item:nth-child(2) .icon-bg { background: linear-gradient(135deg, #4CC9F0, #4361EE); } /* Withdraw - Blue */
+        .icon-item:nth-child(3) .icon-bg { background: linear-gradient(135deg, #70E000, #38B000); } /* Referrals - Green */
+        .icon-item:nth-child(4) .icon-bg { background: linear-gradient(135deg, #FF9E00, #FFAA47); } /* Deposits - Orange */
+        .icon-item:nth-child(5) .icon-bg { background: linear-gradient(135deg, #9D4EDD, #7B2CBF); } /* History - Purple */
+        .icon-item:nth-child(6) .icon-bg { background: linear-gradient(135deg, #F72585, #B5179E); } /* Profile - Pink */
+        .icon-item:nth-child(7) .icon-bg { background: linear-gradient(135deg, #4CC9F0, #4895EF); } /* Task - Light Blue */
+        .icon-item:nth-child(8) .icon-bg { background: linear-gradient(135deg, #FF6B6B, #FF9E00); } /* Setting - Orange/Red */
+        .icon-item:nth-child(9) .icon-bg { background: linear-gradient(135deg, #FF0000, #B22222); } /* Logout - Red */
+        .icon-item:nth-child(10) .icon-bg { background: linear-gradient(135deg, #25D366, #128C7E); } /* WhatsApp - Green */
+        .icon-item:nth-child(11) .icon-bg { background: linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335); } /* Admin Contact - Multi-color */
+        /* Withdrawal Note Card */
+        .withdraw-note-card {
+            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .withdraw-note-card h3 {
+            color: var(--gold-color);
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .withdraw-note-card p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: var(--text-muted);
+        }

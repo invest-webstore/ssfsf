@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X4U Earning</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- FIREBASE SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+<div id="license-prompt" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; display:flex; align-items:center; justify-content:center;">
+  <div style="background:white; border-radius:8px; width:300px; padding:20px; text-align:center;">
+    <h2>Enter License Key</h2>
+    <p style="font-size:12px; color:grey;">Please enter the license key to activate your website.</p>
+    <input type="text" id="license-key-input" placeholder="Enter your key here..." style="width:90%; padding:8px; margin-top:10px;">
+    <button onclick="checkLicense()" style="width:95%; padding:10px; background:blue; color:white; border:none; margin-top:10px; cursor:pointer;">Verify</button>
+    <p id="license-message" style="color:red; margin-top:10px;"></p>
+  </div>
+</div>
+    <div class="mobile-container">
+        <!-- AUTHENTICATION PAGES -->
+        <div id="auth-pages">
+            <!-- Signup and Login Forms -->
+            <div id="signup-page" class="auth-container">
+                <div class="auth-form">
+                    <h1 class="auth-logo">X4U <span>Earning</span></h1>
+                    <form onsubmit="handleAuth(event, 'signup')">
+                        <input type="text" id="signup-username" placeholder="Username" required>
+                        <input type="tel" id="signup-phone" placeholder="Phone No" required>
+                        <input type="email" id="signup-email" placeholder="Email Address" required>
+                        <input type="password" id="signup-password" placeholder="Password" required>
+                        <button type="submit" class="auth-btn">Signup</button>
+                    </form>
+                    <p class="auth-toggle-link" onclick="toggleAuthPages()">Already Account? Login</p>
+                </div>
+            </div>
+            <div id="login-page" class="auth-container">
+                <div class="auth-form">
+                    <h1 class="auth-logo">X4U <span>Earning</span></h1>
+                    <form onsubmit="handleAuth(event, 'login')">
+                        <input type="email" id="login-email" placeholder="Email Address" required>
+                        <input type="password" id="login-password" placeholder="Password" required>
+                        <button type="submit" class="auth-btn">Login</button>
+                    </form>
+                    <p class="auth-toggle-link" onclick="toggleAuthPages()">Don't Have Account? Signup</p>
+                </div>
+            </div>
+        </div>
+        <!-- MAIN APPLICATION -->
+        <div id="main-app">
+            <div id="dashboard-page">
+                 <header class="header"><h1 class="header-title">X4U <span>Earning</span></h1><button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button></header>
+                 <main class="page">
+                    <section class="info-cards">
+                        <div class="card"><p class="card-title">Username</p><p class="card-value" id="dashboard-username">Loading...</p></div>
+                        <div class="card"><p class="card-title">Account Balance</p><p class="card-value" id="dashboard-balance">PKR 0.00</p></div>
+                        <div class="card"><p class="card-title">Total Deposits</p><p class="card-value" id="dashboard-total-deposits">PKR 0</p></div>
+                        <div class="card"><p class="card-title">Total Profit</p><p class="card-value" id="dashboard-total-profit">PKR 0</p></div>
+                    </section>
+                    <section class="icon-grid">
+                        <div class="icon-item" onclick="showPackagesPage()"><div class="icon-bg"><i class="fa-solid fa-cart-shopping"></i></div><p>Buy Plan</p></div>
+                        <div class="icon-item" onclick="showPaymentPage()"><div class="icon-bg"><i class="fa-solid fa-money-bill-transfer"></i></div><p>Withdraw</p></div>
+                        <div class="icon-item" onclick="showReferralsPage()"><div class="icon-bg"><i class="fa-solid fa-users"></i></div><p>Referrals</p></div>
+                        <div class="icon-item" onclick="showActiveDepositsPage()"><div class="icon-bg"><i class="fa-solid fa-wallet"></i></div><p>Deposits</p></div>
+                        <div class="icon-item" onclick="showWithdrawHistoryPage()"><div class="icon-bg"><i class="fa-solid fa-history"></i></div><p>History</p></div>
+                        <div class="icon-item" onclick="showProfilePage()"><div class="icon-bg"><i class="fa-solid fa-user-pen"></i></div><p>Profile</p></div>
+                        <div class="icon-item" onclick="showTaskPage()"><div class="icon-bg"><i class="fa-solid fa-list-check"></i></div><p>Task</p></div>
+                        <div class="icon-item" onclick="showProfilePage()"><div class="icon-bg"><i class="fa-solid fa-gears"></i></div><p>Setting</p></div>
+                        <div class="icon-item" onclick="handleLogout()"><div class="icon-bg"><i class="fa-solid fa-right-from-bracket"></i></div><p>Logout</p></div>
+                        <div class="icon-item" onclick="openGroupChat()"><div class="icon-bg"><i class="fa-brands fa-whatsapp"></i></div><p>WhatsApp</p></div>
+                        <div class="icon-item" onclick="contactAdmin()"><div class="icon-bg"><i class="fa-solid fa-envelope"></i></div><p>Admin Contact</p></div>
+                    </section>
+                    <section class="info-cards" style="margin-top: 30px; margin-bottom: 20px;">
+                        <div class="card"><p class="card-title">Pending Deposits</p><p class="card-value" id="dashboard-pending-deposits">PKR 0</p></div>
+                        <div class="card">
+                            <p class="card-title">Total Referrals Bonus</p>
+                            <p class="card-value" id="dashboard-total-commission">PKR 0</p>
+                        </div>
+                        <div class="card"><p class="card-title">Pending Withdraws</p><p class="card-value" id="dashboard-pending-withdraws">PKR 0</p></div>
+                        <div class="card"><p class="card-title">Total Withdraws</p><p class="card-value" id="dashboard-total-withdraws">PKR 0</p></div>
+                    </section>
+<div class="invitation-container" style="margin-top: 30px;">
+    <h3>Invitation Link</h3>
+    <div class="link-box">
+        <input type="text" id="dashboard-referral-link-input" readonly>
+        <button id="dashboard-copy-referral-btn" onclick="copyLink('dashboard-referral-link-input')">Copy</button>
+    </div>
+</div>
+                 </main>
+            </div>
+            <!-- All other app pages -->
+            <div id="active-deposits-page">
+                <header class="header">
+                    <button class="back-btn" onclick="showDashboardPage()"><i class="fa-solid fa-arrow-left"></i></button>
+                    <button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </header>
+                <main class="page">
+                    <h2 class="page-title">Deposit History</h2>
+                    <div class="deposits-table-container">
+                        <div class="deposits-table-header">
+                            <span>Plan</span>
+                            <span>Amount</span>
+                            <span>Date</span>
+                            <span>Status</span>
+                        </div>
+                        <div class="deposits-table-body" id="deposits-history-list">
+                            <div class="no-deposits-message">
+                                <p>No deposit history found.</p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="payment-page">
+                <header class="header"><button class="back-btn" onclick="showDashboardPage()"><i class="fa-solid fa-arrow-left"></i></button><button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button></header>
+                <main class="page">
+                   <h2 class="page-title">Payment Methods</h2>
+                   <div class="payment-methods-list">
+                       <button class="payment-btn" onclick="showWithdrawFundPage('Easypaisa')">EASYPAISA</button>
+                       <button class="payment-btn" onclick="showWithdrawFundPage('Jazzcash')">JAZZCASH</button>
+                       <button class="payment-btn" onclick="showWithdrawFundPage('Nayapay')">NAYAPAY</button>
+                       <button class="payment-btn" onclick="showWithdrawFundPage('Sadapay')">SADAPAY</button>
+                       <button class="payment-btn" onclick="showWithdrawFundPage('Upaisa')">UPaisa</button>
+                   </div>
+               </main>
+           </div>
+           <div id="withdraw-fund-page">
+               <header class="header"><button class="back-btn" onclick="showPaymentPage()"><i class="fa-solid fa-arrow-left"></i></button><button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button></header>
+               <main class="page">
+                   <h2 class="page-title">Withdraw Funds</h2>
+                   <div class="withdraw-form-container">
+                       <img id="withdraw-logo" src="" alt="Payment Method Logo" class="payment-logo">
+                       <form onsubmit="handleWithdraw(event)">
+                           <input type="text" id="withdraw-account-name" placeholder="Your account name" required>
+                           <input type="text" id="withdraw-account-no" placeholder="Your account no" required>
+                           <input type="number" id="withdraw-amount" placeholder="Enter Amount" required>
+                           <button type="submit" class="withdraw-now-btn">Withdraw Now</button>
+                       </form>
+                       <div class="withdraw-note-card">
+                           <h3>Note:</h3>
+                           <p>1. Minimum withdrawal is Rs. 10.</p>
+                           <p>2. If you do not receive your withdrawal within 24 hours, please contact customer support.</p>
+                           <p>3. Withdrawal requests are processed between 9 AM and 10 PM.</p>
+                       </div>
+                   </div>
+               </main>
+           </div>
+           <div id="packages-page">
+                <header class="header"><button class="back-btn" onclick="showDashboardPage()"><i class="fa-solid fa-arrow-left"></i></button><button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button></header>
+                <main class="page">
+                   <h2 class="page-title">Packages Plans</h2>
+                   <div class="plan-card">
+                       <div class="plan-header">
+                           <div><h3 class="plan-title">Plan-01</h3><span class="plan-price">PKR 200</span></div>
+                           <button class="buy-plan-btn" onclick="showDepositPaymentPage('Plan-01', '200')">Buy</button>
+                       </div>
+                       <div class="plan-details-grid">
+                           <div class="detail-item"><p class="detail-value">18</p><p class="detail-label">Daily Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">1170</p><p class="detail-label">Total Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">65</p><p class="detail-label">Days</p></div>
+                           <div class="detail-item"><p class="detail-value">1.7%</p><p class="detail-label">Commission</p></div>
+                       </div>
+                   </div>
+                   <div class="plan-card">
+                       <div class="plan-header">
+                           <div><h3 class="plan-title">Plan-02</h3><span class="plan-price">PKR 500</span></div>
+                           <button class="buy-plan-btn" onclick="showDepositPaymentPage('Plan-02', '500')">Buy</button>
+                       </div>
+                       <div class="plan-details-grid">
+                           <div class="detail-item"><p class="detail-value">40</p><p class="detail-label">Daily Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">2600</p><p class="detail-label">Total Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">65</p><p class="detail-label">Days</p></div>
+                           <div class="detail-item"><p class="detail-value">1.7%</p><p class="detail-label">Commission</p></div>
+                       </div>
+                   </div>
+                   <div class="plan-card">
+                       <div class="plan-header">
+                           <div><h3 class="plan-title">Plan-03</h3><span class="plan-price">PKR 1200</span></div>
+                           <button class="buy-plan-btn" onclick="showDepositPaymentPage('Plan-03', '1200')">Buy</button>
+                       </div>
+                       <div class="plan-details-grid">
+                          <div class="detail-item"><p class="detail-value">97</p><p class="detail-label">Daily Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">6305</p><p class="detail-label">Total Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">65</p><p class="detail-label">Days</p></div>
+                           <div class="detail-item"><p class="detail-value">1.7%</p><p class="detail-label">Commission</p></div>
+                       </div>
+                   </div>
+                   <div class="plan-card">
+                       <div class="plan-header">
+                           <div><h3 class="plan-title">Plan-04</h3><span class="plan-price">PKR 2430</span></div>
+                           <button class="buy-plan-btn" onclick="showDepositPaymentPage('Plan-04', '2430')">Buy</button>
+                       </div>
+                       <div class="plan-details-grid">
+                           <div class="detail-item"><p class="detail-value">196</p><p class="detail-label">Daily Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">12740</p><p class="detail-label">Total Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">65</p><p class="detail-label">Days</p></div>
+                           <div class="detail-item"><p class="detail-value">1.7%</p><p class="detail-label">Commission</p></div>
+                       </div>
+                   </div>
+                   <div class="plan-card">
+                       <div class="plan-header">
+                           <div><h3 class="plan-title">Plan-05</h3><span class="plan-price">PKR 5060</span></div>
+                           <button class="buy-plan-btn" onclick="showDepositPaymentPage('Plan-05', '5060')">Buy</button>
+                       </div>
+                       <div class="plan-details-grid">
+                           <div class="detail-item"><p class="detail-value">405</p><p class="detail-label">Daily Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">26325</p><p class="detail-label">Total Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">65</p><p class="detail-label">Days</p></div>
+                           <div class="detail-item"><p class="detail-value">1.7%</p><p class="detail-label">Commission</p></div>
+                       </div>
+                   </div>
+                   <div class="plan-card">
+                       <div class="plan-header">
+                           <div><h3 class="plan-title">Plan-06</h3><span class="plan-price">PKR 10620</span></div>
+                           <button class="buy-plan-btn" onclick="showDepositPaymentPage('Plan-06', '10620')">Buy</button>
+                       </div>
+                       <div class="plan-details-grid">
+                           <div class="detail-item"><p class="detail-value">850</p><p class="detail-label">Daily Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">55250</p><p class="detail-label">Total Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">65</p><p class="detail-label">Days</p></div>
+                           <div class="detail-item"><p class="detail-value">1.7%</p><p class="detail-label">Commission</p></div>
+                       </div>
+                   </div>
+                   <div class="plan-card">
+                       <div class="plan-header">
+                           <div><h3 class="plan-title">Plan-07</h3><span class="plan-price">PKR 21240</span></div>
+                           <button class="buy-plan-btn" onclick="showDepositPaymentPage('Plan-07', '21240')">Buy</button>
+                       </div>
+                       <div class="plan-details-grid">
+                           <div class="detail-item"><p class="detail-value">1700</p><p class="detail-label">Daily Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">110500</p><p class="detail-label">Total Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">65</p><p class="detail-label">Days</p></div>
+                           <div class="detail-item"><p class="detail-value">1.7%</p><p class="detail-label">Commission</p></div>
+                       </div>
+                   </div>
+                   <div class="plan-card">
+                       <div class="plan-header">
+                           <div><h3 class="plan-title">Plan-08</h3><span class="plan-price">PKR 42480</span></div>
+                           <button class="buy-plan-btn" onclick="showDepositPaymentPage('Plan-08', '42480')">Buy</button>
+                       </div>
+                       <div class="plan-details-grid">
+                           <div class="detail-item"><p class="detail-value">3400</p><p class="detail-label">Daily Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">221000</p><p class="detail-label">Total Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">65</p><p class="detail-label">Days</p></div>
+                           <div class="detail-item"><p class="detail-value">1.7%</p><p class="detail-label">Commission</p></div>
+                       </div>
+                   </div>
+                   <div class="plan-card">
+                       <div class="plan-header">
+                           <div><h3 class="plan-title">Plan-09</h3><span class="plan-price">PKR 53100</span></div>
+                           <button class="buy-plan-btn" onclick="showDepositPaymentPage('Plan-09', '53100')">Buy</button>
+                       </div>
+                       <div class="plan-details-grid">
+                           <div class="detail-item"><p class="detail-value">4250</p><p class="detail-label">Daily Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">276250</p><p class="detail-label">Total Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">65</p><p class="detail-label">Days</p></div>
+                           <div class="detail-item"><p class="detail-value">1.7%</p><p class="detail-label">Commission</p></div>
+                       </div>
+                   </div>
+                   <div class="plan-card">
+                       <div class="plan-header">
+                           <div><h3 class="plan-title">Plan-10</h3><span class="plan-price">PKR 74340</span></div>
+                           <button class="buy-plan-btn" onclick="showDepositPaymentPage('Plan-10', '74340')">Buy</button>
+                       </div>
+                       <div class="plan-details-grid">
+                           <div class="detail-item"><p class="detail-value">5950</p><p class="detail-label">Daily Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">386750</p><p class="detail-label">Total Profit</p></div>
+                           <div class="detail-item"><p class="detail-value">65</p><p class="detail-label">Days</p></div>
+                           <div class="detail-item"><p class="detail-value">1.7%</p><p class="detail-label">Commission</p></div>
+                       </div>
+                   </div>
+                </main>
+           </div>
+           <div id="deposit-payment-page">
+               <header class="header"><button class="back-btn" onclick="showPackagesPage()"><i class="fa-solid fa-arrow-left"></i></button><button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button></header>
+               <main class="page">
+                   <h2 class="page-title">Payment Methods</h2>
+                   <div class="payment-methods-list">
+                       <button class="payment-btn" onclick="showDepositDetailsPage('Easypaisa')">EASYPAISA</button>
+                       <button class="payment-btn" onclick="showDepositDetailsPage('Jazzcash')">JAZZCASH</button>
+                   </div>
+               </main>
+           </div>
+           <div id="deposit-details-page">
+               <header class="header"><button class="back-btn" onclick="showDepositPaymentPage()"><i class="fa-solid fa-arrow-left"></i></button><button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button></header>
+               <main class="page deposit-details-page-content">
+                   <img id="deposit-method-logo" src="" alt="Payment Method Logo" class="deposit-method-logo">
+                   <div class="info-box">
+                       Deposit the package amount to our address within 10 minutes to complete the order.
+                   </div>
+                   <div class="details-box">
+                       <div class="detail-row"><span>Deposit Amount</span><span id="deposit-amount-details"></span></div>
+                       <div class="detail-row"><span>Bank Name</span><span id="deposit-bank-name"></span></div>
+                       <div class="detail-row"><span>Account Name</span><span id="deposit-account-name"></span></div>
+                       <div class="detail-row"><span>Account No</span><span id="deposit-account-no"></span></div>
+                   </div>
+                   <div class="proof-box">
+                       <h3>Upload Your Deposit Proof</h3>
+                       <form onsubmit="handleDepositProof(event)">
+                           <input type="text" id="transaction-id-input" placeholder="Transaction ID" required>
+                           <input type="text" id="sender-name-input" placeholder="Sender Account Name" required>
+                           <input type="text" id="sender-account-no-input" placeholder="Sender Account Number" required>
+                           <button type="submit" class="upload-proof-btn">Upload Proof</button>
+                       </form>
+                   </div>
+               </main>
+           </div>
+            <div id="referrals-page">
+                <header class="header">
+                    <button class="back-btn" onclick="showDashboardPage()"><i class="fa-solid fa-arrow-left"></i></button>
+                    <button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </header>
+                <main class="page">
+                    <div class="invitation-container">
+                        <h3>Invitation Link</h3>
+                        <div class="link-box">
+                            <input type="text" id="referral-link-input" readonly>
+                            <button id="copy-referral-btn" onclick="copyLink('referral-link-input')">Copy</button>
+                        </div>
+                    </div>
+                    <div style="background-color: #1e1e1e; color: #b0b0b0; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333333;">
+    <p style="margin: 0; font-size: 0.9em;">
+        <strong>Note:</strong> You will receive a 1.7% daily referral commission. When your referral purchases a plan, you will earn a 1.7% bonus from their daily ad earnings.
+    </p>
+</div>
+                    <div class="referrals-list-title">Level-1 Referrals</div>
+                    <div class="referrals-list-container">
+                        <div class="referrals-list-header">
+                            <span>#</span>
+                            <span>Username</span>
+                            <span>Since</span>
+                            <span>Deposit</span>
+                            <span>Bonus</span>
+                        </div>
+                        <div id="referrals-list">
+                           <div class="no-referrals">
+                                <p>No referrals found.</p>
+                           </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="profile-page">
+                <header class="header"><button class="back-btn" onclick="showDashboardPage()"><i class="fa-solid fa-arrow-left"></i></button><button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button></header>
+                <main class="page">
+                    <h2 class="page-title">Profile</h2>
+                    <div class="profile-form-container">
+                        <div class="profile-form-row">
+                            <label>User Name</label>
+                            <input type="text" id="profile-username" disabled>
+                        </div>
+                        <div class="profile-form-row">
+                            <label>Phone No</label>
+                            <input type="tel" id="profile-phone" disabled>
+                        </div>
+                         <div class="profile-form-row">
+                            <label>Email</label>
+                            <input type="email" id="profile-email" disabled>
+                        </div>
+                        <div class="profile-form-row">
+                            <label>Password</label>
+                            <input type="text" id="profile-password" disabled>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="task-page">
+                <header class="header">
+                    <button class="back-btn" onclick="showDashboardPage()"><i class="fa-solid fa-arrow-left"></i></button>
+                    <h1 class="header-title"><span>Daily</span> Task</h1>
+                    <button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </header>
+                <main class="page" id="tasks-container">
+                    <div class="no-history">
+                        <p>Loading your tasks...</p>
+                    </div>
+                </main>
+            </div>
+            <div id="earning-history-page">
+                <header class="header"><button class="back-btn" onclick="showDashboardPage()"><i class="fa-solid fa-arrow-left"></i></button><button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button></header>
+                <main class="page">
+                    <h2 class="page-title">Earning History</h2>
+                    <div class="history-container">
+                        <div class="history-header">
+                            <span>#</span>
+                            <span>Earning Date</span>
+                            <span>Active Package</span>
+                            <span>Profit Amount</span>
+                        </div>
+                        <div id="history-list">
+                            <div class="no-history">
+                                <p>No Earning History Found.</p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="withdraw-history-page">
+                <header class="header"><button class="back-btn" onclick="showDashboardPage()"><i class="fa-solid fa-arrow-left"></i></button><button class="power-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i></button></header>
+                <main class="page">
+                    <h2 class="page-title">Withdraw History</h2>
+                    <div class="history-container">
+                        <div class="history-header">
+                            <span>#</span>
+                            <span>Date</span>
+                            <span>Method</span>
+                            <span>Amount</span>
+                            <span>Status</span>
+                        </div>
+                        <div id="withdraw-history-list">
+                            <div class="no-history">
+                                <p>No Withdraw History Found.</p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <nav class="bottom-nav">
+                <a href="javascript:void(0);" class="nav-item" onclick="showDashboardPage()"><i class="fa-solid fa-house"></i><span>Home</span></a>
+                <a href="javascript:void(0);" class="nav-item" onclick="showPaymentPage()"><i class="fa-solid fa-file-invoice-dollar"></i><span>Withdraw</span></a>
+                <a href="javascript:void(0);" class="nav-item" onclick="showActiveDepositsPage()"><i class="fa-solid fa-piggy-bank"></i><span>Deposits</span></a>
+                <a href="javascript:void(0);" class="nav-item" onclick="showProfilePage()"><i class="fa-solid fa-user"></i><span>Account</span></a>
+            </nav>
+        </div>
+    </div>
+<div id="custom-alert-overlay" style="display: none;">
+        <div id="custom-alert-box">
+            <p id="custom-alert-message"></p>
+            <button id="custom-alert-ok-btn" onclick="hideCustomAlert()">OK</button>
+        </div>
+    </div>
+    <div id="custom-confirm-overlay" style="display: none;">
+        <div id="custom-confirm-box">
+            <p id="custom-confirm-message"></p>
+            <div id="custom-confirm-buttons">
+                <button id="custom-confirm-no-btn">Cancel</button>
+                <button id="custom-confirm-yes-btn">Logout</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
