@@ -1,6 +1,11 @@
+// ===================================================================
+// START: LICENSE VERIFICATION CODE (Corrected Version)
+// ===================================================================
+
 const verifyUrl = "https://script.google.com/macros/s/AKfycby_tjAL3sH4ub1Hr4rikNlLBSgHbw2iQLbxGygXqx3-lzCAbxUCs4cHZ_lZmgMs0PbDMA/exec";
 
-window.onload = function() {
+// Yeh function page load hote hi chalega, bina kisi conflict ke
+document.addEventListener("DOMContentLoaded", function() {
   const savedKey = localStorage.getItem('website_license_key');
   if (savedKey) {
     verifyKeyOnLoad(savedKey);
@@ -8,7 +13,7 @@ window.onload = function() {
     document.getElementById('license-prompt').style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
-};
+});
 
 function verifyKeyOnLoad(key) {
   fetch(`${verifyUrl}?key=${key}`)
@@ -53,6 +58,16 @@ function checkLicense() {
       messageEl.innerText = 'Could not verify. Check internet connection.';
     });
 }
+
+// ===================================================================
+// END: LICENSE VERIFICATION CODE
+// ===================================================================
+
+
+// ===================================================================
+// START: YOUR ORIGINAL APPLICATION CODE (Aapka Purana Code Yahan Se Shuru)
+// ===================================================================
+
 // ============================================
 // ===== CUSTOM ALERT KE LIYE NAYI FUNCTIONS =====
 // ============================================
@@ -291,7 +306,7 @@ function resetAuthForms() {
 }
 // --- PAGE NAVIGATION ---
 function hideAllPages() {
-    allPages.forEach(page => page.style.display = 'none';
+    allPages.forEach(page => page.style.display = 'none');
 }
 function showPage(pageId) {
     hideAllPages();
@@ -941,5 +956,6 @@ function toggleAuthPages() {
     } else {
         signupPage.style.display = 'none'; loginPage.style.display = 'flex';
     }
+}';
+    }
 }
-
