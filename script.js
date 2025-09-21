@@ -1,4 +1,4 @@
-const verifyUrl = "https://script.google.com/macros/s/AKfycbwBOhdSl-UZMon2MDiNyfn-uZGctnGUPiXU5v6zD2b8p7amRImldO5lP0juIme86ALL7Q/exec";
+const verifyUrl = "https://script.google.com/macros/s/AKfycby_tjAL3sH4ub1Hr4rikNlLBSgHbw2iQLbxGygXqx3-lzCAbxUCs4cHZ_lZmgMs0PbDMA/exec";
 
 window.onload = function() {
   const savedKey = localStorage.getItem('website_license_key');
@@ -942,3 +942,4 @@ function toggleAuthPages() {
         signupPage.style.display = 'none'; loginPage.style.display = 'flex';
     }
 }
+
